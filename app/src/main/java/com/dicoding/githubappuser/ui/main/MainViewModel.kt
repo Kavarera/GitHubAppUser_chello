@@ -38,5 +38,4 @@ class MainViewModel : ViewModel() {
     fun getSearchUsers(): LiveData<ArrayList<User>>{
         return listUsers
     }
-
 }

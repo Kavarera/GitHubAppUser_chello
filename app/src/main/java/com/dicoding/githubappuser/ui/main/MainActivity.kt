@@ -3,6 +3,7 @@ package com.dicoding.githubappuser.ui.main
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
@@ -47,6 +48,7 @@ class MainActivity : AppCompatActivity() {
 
             etQuery.setOnKeyListener{ v, keyCode, event ->
                 if(event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER){
+                    Log.d("sea","Tombol enter dibaca")
                     searchUser()
                     return@setOnKeyListener true
                 }
@@ -64,9 +66,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun searchUser(){
+        Log.d("sea","Mengeksekusi searchUser()")
         binding.apply {
             val query = etQuery.text.toString()
             if(query.isEmpty()) return
+
+            Log.d("sea","Menerima query = $query")
             showLoading(true)
             viewModel.setSearchUsers(query)
         }

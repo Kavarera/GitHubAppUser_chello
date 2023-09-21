@@ -5,23 +5,25 @@ import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.dicoding.githubappuser.databinding.ActivityDetailUserBinding
 import com.dicoding.githubappuser.databinding.ActivityMainBinding
 
 class DetailUserActivity : AppCompatActivity() {
 
+    private lateinit var binding: ActivityDetailUserBinding
+    private lateinit var viewModel: DetailUserViewModel
     companion object{
         const val EXTRA_USERNAME = "extra_username"
     }
 
-    private lateinit var binding: ActivityMainBinding
-    private lateinit var viewModel: DetailUserViewModel
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityDetailUserBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         val username = intent.getStringExtra(EXTRA_USERNAME)
+        val bundle = Bundle()
+        bundle.putString(EXTRA_USERNAME, username)
 
         viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(DetailUserViewModel::class.java)
 
@@ -37,16 +39,17 @@ class DetailUserActivity : AppCompatActivity() {
                         .load(it.avatar_url)
                         .transition(DrawableTransitionOptions.withCrossFade())
                         .centerCrop()
-                        .into(ivPofile)
+                        .into(binding.ivProfile)
                 }
             }
         })
+        val sectionPagerAdapter = SectionPagerAdapter(this, supportFragmentManager, bundle)
+        binding.apply{
+            viewPager.adapter = sectionPagerAdapter
+            tabs.setupWithViewPager(viewPager)
+        }
 
     }
 
-    val sectionPagerAdapter = SectionPagerAdapter(this, supportFragmentManager)
-    binding.apply{
-        viewPager.adapter = sectionPagerAdapter
-        tabs.setupWithViewPager(viewPager)
-    }
+
 }
